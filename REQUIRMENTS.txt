@@ -1,4 +1,0 @@
-Install python 2.7
-Linux -- Only to use the soffice command
-pip install wordnik
-pip install flask
