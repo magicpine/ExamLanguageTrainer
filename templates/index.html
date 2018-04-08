@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block the_block %}
+		<div>
+			<h2>Upload your exam here</h2>
+			<form action="/quiz" method="post" enctype="multipart/form-data">
+				<input type="file" name="exam" />
+				<input type="submit" />
+			</form>
+		</div>
+{% endblock %}

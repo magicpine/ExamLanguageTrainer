@@ -12,3 +12,5 @@ for tmp in exampleDef:
     print (tmp.text) # str
 example = wordApi.getWordFrequency(example.word)
 print (example.totalCount) #int
+example = wordApi.getWordFrequency('kahflkajsf')
+print(example.totalCount)

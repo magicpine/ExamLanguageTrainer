@@ -1,2 +1,3 @@
 tmp/*
 *.me
+__pycache__/*

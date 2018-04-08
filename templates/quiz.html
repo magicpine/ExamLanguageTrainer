@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block the_block %}
+		<p>
+			<h2>Here are the words</h2>
+      <form action='/answers' method='POST'>
+  			<ol>
+  				{% for word, def in words.iteritems() %}
+  					<li>
+  						What is the definition of {{word}}? </br>
+              {% for definition in def %}
+                  <input type='radio' value='{{definition}}' name='{{word}}' />{{definition}} </br>
+              {% endfor %}
+  					</li>
+  				{% endfor %}
+  			</ol>
+        <input type="submit" value="submit" />
+      </form>
+		<p>
+{% endblock %}
