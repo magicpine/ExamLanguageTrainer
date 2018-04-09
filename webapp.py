@@ -23,12 +23,15 @@ FREQUENCY_LIMIT = 100
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.secret_key = 'itsmybirthdaythatsthepassword'
 
 
 def get_text(filename):
     sys = 'soffice --headless --convert-to txt:Text ' + UPLOAD_FOLDER + filename
+    print sys
     os.system(sys)
     new_filename = filename.split('.')[0] + '.txt'
+    print new_filename
     with open(new_filename, 'r') as myfile:
         data=myfile.read().replace('\n', '')
     os.system('rm -f ' + new_filename)
@@ -163,5 +166,4 @@ def answers():
 
 
 if __name__ == '__main__':
-    app.secret_key = 'itsmybirthdaythatsthepassword'
     app.run(debug=True)
