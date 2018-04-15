@@ -1,5 +1,3 @@
 Flask
 gunicorn
 wordnik
-libreoffice
-openjdk-8-jre
