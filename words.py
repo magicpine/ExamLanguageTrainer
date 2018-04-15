@@ -13,6 +13,9 @@ apiKey = '972e0b90c32a7859fc4944c19a603e0a6cf53a45963d7ee42 '
 client = swagger.ApiClient(apiKey, apiUrl)
 
 
+NUM_OF_RANDOM_DEF = 3
+
+
 def get_text(filename, UPLOAD_FOLDER):
     sys = 'soffice --headless --convert-to txt:Text ' + UPLOAD_FOLDER + filename
     print sys
@@ -82,7 +85,7 @@ def get_definitions(data_list_freq):
 
 
 def get_random_defintions(length):
-    total_count = length * 3
+    total_count = length * NUM_OF_RANDOM_DEF
     random_defintions = []
     wordsApi = WordsApi.WordsApi(client)
     wordApi = WordApi.WordApi(client)
@@ -98,7 +101,7 @@ def make_questions(data_list_def, list_random_def):
     count = 0
     definitions = []
     for word in data_list_def:
-        for x in range(3):
+        for x in range(NUM_OF_RANDOM_DEF):
             definitions.append(list_random_def[count])
             count = count + 1
         definitions.append(data_list_def[word])
