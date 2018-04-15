@@ -7,10 +7,13 @@
   			<ol>
   				{% for word, def in words.iteritems() %}
   					<li>
-  						What is the definition of {{word}}? </br>
+  						What is the definition of <b>{{word}}</b>? </br>
               {% for definition in def %}
                   <input type='radio' value='{{definition}}' name='{{word}}' />{{definition}} </br>
               {% endfor %}
+						</br>
+						</br>
+						</br>
   					</li>
   				{% endfor %}
   			</ol>
