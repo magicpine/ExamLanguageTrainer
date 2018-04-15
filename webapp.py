@@ -83,11 +83,14 @@ def get_definitions(data_list_freq):
     data_list_def = {}
     wordApi = WordApi.WordApi(client)
     for word in data_list_freq.keys():
-        word = word.decode('ascii', 'ignore')
-        defin = wordApi.getDefinitions(word)
-        if (defin != None):
-            if (len(defin) > 0):
-                data_list_def[word] = defin[0].text
+        try:
+            word = word.decode('ascii', 'ignore')
+            defin = wordApi.getDefinitions(word)
+            if (defin != None):
+                if (len(defin) > 0):
+                    data_list_def[word] = defin[0].text
+        except Exception as e:
+            pass #TODO log ERROR
     return data_list_def
 
 
@@ -138,10 +141,11 @@ def quiz():
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        data = get_text(file.filename)
+        data = get_text(filename)
         data_list = split_text(data)
         data_list_freq = get_freq(data_list)
         data_list_freq = get_uncommon_words(data_list_freq)
+        #TODO Cut this in half for review of words.
         data_list_def = get_definitions(data_list_freq)
         session['correct_defintions'] = data_list_def
         list_random_def = get_random_defintions(len(data_list_freq))
