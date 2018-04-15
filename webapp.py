@@ -15,6 +15,7 @@ DISALLOWED_WORD_LIST = ('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',',
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.secret_key = 'itsmybirthdaythatsthepassword'
 
 
 @app.route('/')
