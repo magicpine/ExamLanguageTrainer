@@ -1,3 +1,4 @@
 tmp/*
 *.me
 __pycache__/*
+videos/*
