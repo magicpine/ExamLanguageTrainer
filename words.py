@@ -49,24 +49,17 @@ def split_text(data, DISALLOWED_WORD_LIST):
     return clean_list_set_list
 
 
-def get_freq(data_list):
+def get_uncommon_words(data_list, FREQUENCY_LIMIT):
     data_list_freq = {}
     wordApi = WordApi.WordApi(client)
     for word in data_list:
         try:
             example = wordApi.getWordFrequency(word)
-            data_list_freq[word] = example.totalCount
+            if example.totalCount <= FREQUENCY_LIMIT and example.totalCount > 0:
+                data_list_freq[word] = example.totalCount
         except urllib2.HTTPError as e:
             pass #When the word doesn't exist, it throws a HTTP Error
     return data_list_freq
-
-
-def get_uncommon_words(data_list_freq, FREQUENCY_LIMIT):
-    data_list_freq_new = {}
-    for word, freq in data_list_freq.iteritems():
-        if freq <= FREQUENCY_LIMIT and freq > 0:
-            data_list_freq_new[word] = freq
-    return data_list_freq_new
 
 
 def get_definitions(data_list_freq):
