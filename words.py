@@ -17,9 +17,8 @@ NUM_OF_RANDOM_DEF = 3
 
 
 def get_text(filename, UPLOAD_FOLDER):
-    print sys
+    sys = 'soffice --headless --convert-to txt:Text '+UPLOAD_FOLDER+filename    
     os.system(sys)
-    sys = 'soffice --headless --convert-to txt:Text '+UPLOAD_FOLDER+filename
     new_filename = filename.split('.')[0] + '.txt'
     print new_filename
     with open(new_filename, 'r') as myfile:
@@ -54,10 +53,9 @@ def get_uncommon_words(data_list, FREQUENCY_LIMIT):
     wordApi = WordApi.WordApi(client)
     for word in data_list:
         try:
-            example = wordApi.getWordFrequency(word)
-            if example.totalCount <= FREQUENCY_LIMIT and
-            example.totalCount > 0:
-                data_list_freq[word] = example.totalCount
+            freq = wordApi.getWordFrequency(word)
+            if freq.totalCount <= FREQUENCY_LIMIT and freq.totalCount > 0:
+                data_list_freq[word] = freq.totalCount
         except urllib2.HTTPError as e:
             pass  # When the word doesn't exist, it throws a HTTP Error
     return data_list_freq
