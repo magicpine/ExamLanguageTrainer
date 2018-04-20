@@ -1,10 +1,10 @@
-#Used to convert files to Text
+# Used to convert files to Text
 import os
-#Used for HTTPError
+# Used for HTTPError
 import urllib2
-#Used to shuffle definitions
+# Used to shuffle definitions
 import random
-#Used to use the api
+# Used to use the api
 from wordnik import *
 
 
@@ -17,13 +17,13 @@ NUM_OF_RANDOM_DEF = 3
 
 
 def get_text(filename, UPLOAD_FOLDER):
-    sys = 'soffice --headless --convert-to txt:Text ' + UPLOAD_FOLDER + filename
     print sys
     os.system(sys)
+    sys = 'soffice --headless --convert-to txt:Text '+UPLOAD_FOLDER+filename
     new_filename = filename.split('.')[0] + '.txt'
     print new_filename
     with open(new_filename, 'r') as myfile:
-        data=myfile.read().replace('\n', '')
+        data = myfile.read().replace('\n', '')
     os.system('rm -f ' + new_filename)
     os.system('rm -f ' + UPLOAD_FOLDER + filename)
     return data
@@ -35,7 +35,7 @@ def allowed_file(filename, ALLOWED_EXTENSIONS):
 
 
 def split_text(data, DISALLOWED_WORD_LIST):
-    data  = data.replace('\t', '')
+    data = data.replace('\t', '')
     data_list = data.split(' ')
     clean_list = []
     for word in data_list:
@@ -55,10 +55,11 @@ def get_uncommon_words(data_list, FREQUENCY_LIMIT):
     for word in data_list:
         try:
             example = wordApi.getWordFrequency(word)
-            if example.totalCount <= FREQUENCY_LIMIT and example.totalCount > 0:
+            if example.totalCount <= FREQUENCY_LIMIT and
+            example.totalCount > 0:
                 data_list_freq[word] = example.totalCount
         except urllib2.HTTPError as e:
-            pass #When the word doesn't exist, it throws a HTTP Error
+            pass  # When the word doesn't exist, it throws a HTTP Error
     return data_list_freq
 
 
@@ -69,11 +70,11 @@ def get_definitions(data_list_freq):
         try:
             word = word.decode('ascii', 'ignore')
             defin = wordApi.getDefinitions(word)
-            if (defin != None):
+            if (defin is not None):
                 if (len(defin) > 0):
                     data_list_def[word] = defin[0].text
         except Exception as e:
-            pass #TODO log ERROR
+            pass  # TODO log ERROR
     return data_list_def
 
 
@@ -83,7 +84,8 @@ def get_random_defintions(length):
     wordsApi = WordsApi.WordsApi(client)
     wordApi = WordApi.WordApi(client)
     for x in range(total_count):
-        example = wordsApi.getRandomWord(hasDictionaryDef=True,minDictionaryCount=2)
+        example = wordsApi.getRandomWord(hasDictionaryDef=True,
+                                         minDictionaryCount=2)
         exampleDef = wordApi.getDefinitions(example.word)
         random_defintions.append(exampleDef[0].text)
     return random_defintions
