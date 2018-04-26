@@ -45,6 +45,7 @@ def review():
         data_list_def = get_definitions(data_list_freq)
         session['defintions'] = data_list_def
         return render_template('review.html', words=data_list_def)
+    return 'WRONG FILE Extentions' # TODO Error
 
 
 @app.route('/update', methods=["POST"])
