@@ -9,7 +9,8 @@ from words import *
 
 FREQUENCY_LIMIT = 100
 UPLOAD_FOLDER = 'uploads/'
-ALLOWED_EXTENSIONS = set(['txt', 'doc', 'docx'])
+ALLOWED_EXTENSIONS = set(['txt', 'doc', 'docx', 'obt', 'rtf',
+                          'pdf', 'ppt', 'pptx'])
 DISALLOWED_WORD_LIST = ('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',',
                         '\t', ':', '.', '(', ')', '?', '"', "'", '-', ';',)
 

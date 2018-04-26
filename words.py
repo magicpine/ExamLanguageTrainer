@@ -1,11 +1,13 @@
-# Used to convert files to Text
-import os
+# Used to check files
+import os.path
 # Used for HTTPError
 import urllib2
 # Used to shuffle definitions
 import random
 # Used to use the api
 from wordnik import *
+# This is the conversion to text module
+from conversion import *
 
 
 apiUrl = 'http://api.wordnik.com/v4'
@@ -17,12 +19,27 @@ NUM_OF_RANDOM_DEF = 3
 
 
 def get_text(filename, UPLOAD_FOLDER):
-    sys = 'soffice --headless --convert-to txt:Text '+UPLOAD_FOLDER+filename    
-    os.system(sys)
+    # Depending the the file it needs to be changed how it gets
+    # Converted into text
+    if is_pdf(filename):
+        convert_pdf_to_text(filename, UPLOAD_FOLDER)
+    elif is_ppt(filename):
+        convert_ppt_to_text(filename, UPLOAD_FOLDER)
+    else:
+        convert_doc_to_text(filename, UPLOAD_FOLDER)
+    # The new file is the same name just with the txt extention
     new_filename = filename.split('.')[0] + '.txt'
-    print new_filename
-    with open(new_filename, 'r') as myfile:
-        data = myfile.read().replace('\n', '')
+    # Sometimes it gets saved in the UPLOADS folder so just seeing
+    # Where the file is
+    if not os.path.isfile(new_filename):
+        new_filename = UPLOAD_FOLDER + new_filename
+    # Open the file and get text
+    try:
+        with open(new_filename, 'r') as myfile:
+            data = myfile.read().replace('\n', '')
+    except Exception as e:
+        print "Erroring in reading file" # TODO ERROR
+    # Delete the files and return the string of words
     os.system('rm -f ' + new_filename)
     os.system('rm -f ' + UPLOAD_FOLDER + filename)
     return data
