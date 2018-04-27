@@ -11,10 +11,12 @@ from conversion import *
 # Used to log errors
 from errors import *
 
+
 # Used to access the API
 apiUrl = 'http://api.wordnik.com/v4'
 apiKey = '972e0b90c32a7859fc4944c19a603e0a6cf53a45963d7ee42 '
 client = swagger.ApiClient(apiKey, apiUrl)
+
 
 # Public Variables
 NUM_OF_RANDOM_DEF = 3
@@ -102,6 +104,11 @@ def get_uncommon_words(data_list, FREQUENCY_LIMIT):
             message = 'The word: ' + word + " doesn't exist. " + str(e)
             log_API_error(message)
             pass
+        except urllib2.URLError as e:
+            # API stops responding
+            message = 'The API has stopped responding'
+            log_API_error(message)
+            return None
     return data_list_freq
 
 

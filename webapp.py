@@ -57,6 +57,9 @@ def review():
             return redirect(url_for('index'))
         data_list = split_text(data, DISALLOWED_WORD_LIST)
         data_list_freq = get_uncommon_words(data_list, FREQUENCY_LIMIT)
+        if data_list_freq is None:
+            flash(API_ERROR)
+            return redirect(url_for('index'))
         data_list_def = get_definitions(data_list_freq)
         session['defintions'] = data_list_def
         return render_template('review.html', words=data_list_def)
