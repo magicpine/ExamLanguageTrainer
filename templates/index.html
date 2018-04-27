@@ -1,6 +1,17 @@
 {% extends 'base.html' %}
 
 {% block the_block %}
+	<div>
+		{% with messages = get_flashed_messages() %}
+  		{% if messages %}
+    	<ul class=flashes>
+    		{% for message in messages %}
+      		<li>{{ message }}</li>
+    		{% endfor %}
+    	</ul>
+  		{% endif %}
+		{% endwith %}
+	</div>
 		<div>
 			<h2>Upload your exam here</h2>
 			<form action="/review" method="post" enctype="multipart/form-data">
