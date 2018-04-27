@@ -9,7 +9,7 @@ from wordnik import *
 # This is the conversion to text module
 from conversion import *
 # Used to log errors
-from errors import *
+from log_errors_info import *
 
 
 # Used to access the API
