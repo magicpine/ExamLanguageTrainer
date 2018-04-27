@@ -1,0 +1,12 @@
+The files are labeled as what type of error there is and the date
+
+Different Type of files:
+  http_ --> HTTP errors
+  file_ --> file errors
+  api_  --> API errors
+
+http ERROR files look like:
+TIME: {hour/min} IP: {IP address recorded} MESSAGE: {message}
+
+api and file errors files looks like:
+TIME: {hour/min} MESSSAGE: {message and python error message}
