@@ -1,0 +1,4 @@
+The files here are like:
+
+word files looks like:
+TIME: {hour/min} MESSSAGE: {total words found: {} total uncommon words found: {} total uncommon words with defintions: {}}

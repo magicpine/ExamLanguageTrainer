@@ -5,24 +5,31 @@ from flask import (Flask, render_template, request, session, redirect,
 from werkzeug.utils import secure_filename
 # This is the functions
 from words import *
-# This is used to log errors
-from errors import *
 # This is used to save the tests
 from codes import *
+# This is used for logging information
+from log_errors_info import *
 
-
-# Variables
-FREQUENCY_LIMIT = 100
+# FILE LOCATIONS
 UPLOAD_FOLDER = 'uploads/'
 TESTS_FOLDER = 'tests/'
+
+
+# Logging and error messages
 FILE_UPLOAD_ERROR_NONE = 'No file exists'
 FILE_UPLOAD_ERROR_EXTENTIONS = 'Wrong file extentions used'
 NO_CODE = 'Please enter in a code'
 WRONG_CODE = 'Wrong code entered'
+API_ERROR = 'The API has stopped responding. Please try again'
+
+
+#Variables
+FREQUENCY_LIMIT = 100
 ALLOWED_EXTENSIONS = set(['txt', 'doc', 'docx', 'obt', 'rtf',
                           'pdf', 'ppt', 'pptx'])
 DISALLOWED_WORD_LIST = ('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',',
                         '\t', ':', '.', '(', ')', '?', '"', "'", '-', ';',)
+
 
 # Used for FLASK
 app = Flask(__name__)
@@ -61,6 +68,7 @@ def review():
             flash(API_ERROR)
             return redirect(url_for('index'))
         data_list_def = get_definitions(data_list_freq)
+        log_information(len(data_list), len(data_list_freq), len(data_list_def))
         session['defintions'] = data_list_def
         return render_template('review.html', words=data_list_def)
     # File is not a valid file

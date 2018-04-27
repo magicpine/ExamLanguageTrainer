@@ -14,7 +14,7 @@ def save_test_file(words, TESTS_FOLDER):
     return code
 
 
-def load_test_file(code, TESTS_FOLDER):
+def load_test_file(code, TESTS_FOLDER, ERROR_FOLDER):
     ''' Loads the file and defintions from a given code
         returns NONE if file not found or a dict of words and definitions '''
     words = None
