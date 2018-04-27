@@ -1,0 +1,11 @@
+The code is the actual file.
+To figure out how I get the code from the words it's:
+<Total_words>
+<First_word_first_letter>
+<First_word_last_letter>
+<Last_word_first_letter>
+<Last_word_last_letter>
+<ASCII_Value_of_All_first_letters>
+
+Example code --> 11nsby112
+Example file --> 11nsby112.test

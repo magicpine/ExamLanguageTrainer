@@ -12,11 +12,18 @@
   		{% endif %}
 		{% endwith %}
 	</div>
-		<div>
-			<h2>Upload your exam here</h2>
-			<form action="/review" method="post" enctype="multipart/form-data">
-				<input type="file" name="exam" />
-				<input type="submit" />
-			</form>
-		</div>
+	<div>
+		<h2>Upload your exam here</h2>
+		<form action="/review" method="post" enctype="multipart/form-data">
+			<input type="file" name="exam" />
+			<input type="submit" />
+		</form>
+	</div>
+	<div>
+		<h2>Enter in the code given to you to take the test</h2>
+		<form action="/process" method="post">
+			Code: <input type="text" name="test" />
+			<input type="submit" />
+		</form>
+	</div>
 {% endblock %}

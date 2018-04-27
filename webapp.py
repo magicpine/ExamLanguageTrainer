@@ -7,12 +7,18 @@ from werkzeug.utils import secure_filename
 from words import *
 # This is used to log errors
 from errors import *
+# This is used to save the tests
+from codes import *
+
 
 # Variables
 FREQUENCY_LIMIT = 100
 UPLOAD_FOLDER = 'uploads/'
+TESTS_FOLDER = 'tests/'
 FILE_UPLOAD_ERROR_NONE = 'No file exists'
 FILE_UPLOAD_ERROR_EXTENTIONS = 'Wrong file extentions used'
+NO_CODE = 'Please enter in a code'
+WRONG_CODE = 'Wrong code entered'
 ALLOWED_EXTENSIONS = set(['txt', 'doc', 'docx', 'obt', 'rtf',
                           'pdf', 'ppt', 'pptx'])
 DISALLOWED_WORD_LIST = ('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',',
@@ -60,6 +66,15 @@ def review():
     return render_template('index.html')
 
 
+@app.route('/process', methods=['POST'])
+def process():
+    test_code = request.form.get('test')
+    if test_code.strip() == '':
+        flash(NO_CODE)
+        return redirect(url_for('index'))
+    return redirect(url_for('quiz', code=test_code), code=307) # code for POST
+
+
 @app.route('/update', methods=["POST"])
 def update():
     ''' Takes the words after review and stores the words '''
@@ -68,14 +83,19 @@ def update():
     for word in old_data_list_def:
         if request.form.get(word):
             data_list_def[word] = old_data_list_def[word]
-    session['defintions'] = data_list_def
-    return redirect(url_for('quiz'), code=307)  # code for POST
+    code = save_test_file(data_list_def, TESTS_FOLDER)
+    quiz_code = 'quiz?code=' + code
+    return render_template('saved.html', code=code,quiz_code=quiz_code)
 
 
 @app.route('/quiz', methods=["POST"])
 def quiz():
     ''' Takes the words and displays the test '''
-    data_list_def = session['defintions']
+    code = request.args.get('code')
+    data_list_def = load_test_file(code, TESTS_FOLDER)
+    if data_list_def is None:
+        flash(WRONG_CODE)
+        return redirect(url_for('index'))
     list_random_def = get_random_defintions(len(data_list_def))
     questions = make_questions(data_list_def, list_random_def)
     return render_template('quiz.html', words=questions)
