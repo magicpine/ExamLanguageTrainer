@@ -3,3 +3,4 @@ tmp/*
 __pycache__/*
 videos/*
 errors/*.err
+tests/*.test
