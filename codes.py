@@ -1,7 +1,7 @@
 # Used to save tests
 import pickle
 # This is used to log errors
-from errors import *
+from log_errors_info import *
 
 
 def save_test_file(words, TESTS_FOLDER):
