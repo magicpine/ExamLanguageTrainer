@@ -98,7 +98,8 @@ def quiz():
         return redirect(url_for('index'))
     list_random_def = get_random_defintions(len(data_list_def))
     questions = make_questions(data_list_def, list_random_def)
-    return render_template('quiz.html', words=questions)
+    answer_code = 'answers?code=' + code
+    return render_template('quiz.html', words=questions,answer_code=answer_code)
 
 
 @app.route('/answers', methods=["POST"])
@@ -106,7 +107,8 @@ def answers():
     ''' Tallys up the answers from the test & displays what you got right '''
     correct = []
     wrong = {}
-    data_list_def = session['defintions']
+    code = request.args.get('code')
+    data_list_def = load_test_file(code, TESTS_FOLDER)
     for word in data_list_def:
         answered = request.form.get(word)
         if data_list_def[word] == answered:

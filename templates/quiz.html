@@ -3,7 +3,7 @@
 {% block the_block %}
 		<p>
 			<h2>Here are the words</h2>
-      <form action='/answers' method='POST'>
+      <form action={{answer_code}} method='POST'>
   			<ol>
   				{% for word, def in words.iteritems() %}
   					<li>
