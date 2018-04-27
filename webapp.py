@@ -23,7 +23,7 @@ WRONG_CODE = 'Wrong code entered'
 API_ERROR = 'The API has stopped responding. Please try again'
 
 
-#Variables
+# Variables
 FREQUENCY_LIMIT = 100
 ALLOWED_EXTENSIONS = set(['txt', 'doc', 'docx', 'obt', 'rtf',
                           'pdf', 'ppt', 'pptx'])
@@ -68,7 +68,7 @@ def review():
             flash(API_ERROR)
             return redirect(url_for('index'))
         data_list_def = get_definitions(data_list_freq)
-        log_information(len(data_list), len(data_list_freq), len(data_list_def))
+        log_info(len(data_list), len(data_list_freq), len(data_list_def))
         session['defintions'] = data_list_def
         return render_template('review.html', words=data_list_def)
     # File is not a valid file
@@ -83,7 +83,7 @@ def process():
     if test_code.strip() == '':
         flash(NO_CODE)
         return redirect(url_for('index'))
-    return redirect(url_for('quiz', code=test_code), code=307) # code for POST
+    return redirect(url_for('quiz', code=test_code), code=307)  # code for POST
 
 
 @app.route('/update', methods=["POST"])
@@ -96,7 +96,7 @@ def update():
             data_list_def[word] = old_data_list_def[word]
     code = save_test_file(data_list_def, TESTS_FOLDER)
     quiz_code = 'quiz?code=' + code
-    return render_template('saved.html', code=code,quiz_code=quiz_code)
+    return render_template('saved.html', code=code, quiz_code=quiz_code)
 
 
 @app.route('/quiz', methods=["POST"])
@@ -110,7 +110,8 @@ def quiz():
     list_random_def = get_random_defintions(len(data_list_def))
     questions = make_questions(data_list_def, list_random_def)
     answer_code = 'answers?code=' + code
-    return render_template('quiz.html', words=questions,answer_code=answer_code)
+    return render_template('quiz.html', words=questions,
+                           answer_code=answer_code)
 
 
 @app.route('/answers', methods=["POST"])
