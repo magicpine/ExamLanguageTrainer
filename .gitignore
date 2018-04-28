@@ -2,6 +2,3 @@ tmp/*
 *.me
 __pycache__/*
 videos/*
-errors/*.err
-tests/*.test
-logs/*.log
