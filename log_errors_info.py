@@ -18,7 +18,7 @@ def log_info(total_words, total_uncommon_words, total_uncommon_def, mongo):
     ''' Logs Word gathering info '''
     info = ('MESSAGE: ' + 'Total Words Collected: ' + str(total_words) +
             ' Total Uncommon Words found: ' + str(total_uncommon_words) +
-            ' Total Uncommon words found with defintions: ' +
+            ' Total Uncommon words found with definitions: ' +
             str(total_uncommon_def))
     log_message = {'TIME': time.strftime('%Y%m%d%H%M'), 'MESSAGE': info}
     mongo.db.logs.insert_one(log_message).inserted_id
