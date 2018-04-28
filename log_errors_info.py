@@ -1,44 +1,39 @@
 # Used for file formats
 import time
-# Used to write files in UTF-8
-import codecs
 
 
-# File locations
-LOGS_FOLDER = 'logs/'
-ERROR_FOLDER = 'errors/'
-
-
-def log_HTTP_Error(ip, message):
+def log_HTTP_Error(ip, message, mongo):
     ''' Logs HTTP ERRORS '''
-    err = 'IP: ' + ip + ' MESSAGE: ' + message + '\n'
-    filename = ERROR_FOLDER + 'http_' + time.strftime('%Y%m%d') + '.err'
-    with open(filename, 'a') as myfile:
-        myfile.write('TIME: ' + time.strftime('%H%M') + ' ' + err)
+    http_message = {'TIME': time.strftime('%Y%m%d%H%M'), 'IP': ip, 'MESSAGE': message}
+    mongo.db.http.insert_one(http_message).inserted_id
 
 
-def log_file_error(message):
-    ''' Logs FILE ERRORS '''
-    err = 'MESSAGE: ' + message + '\n'
-    filename = ERROR_FOLDER + 'file_' + time.strftime('%Y%m%d') + '.err'
-    with open(filename, 'a') as myfile:
-        myfile.write('TIME: ' + time.strftime('%H%M') + ' ' + err)
-
-
-def log_API_error(message):
+def log_API_error(message, mongo):
     ''' Logs API ERRORS '''
-    err = 'MESSAGE: ' + message + '\n'
-    filename = ERROR_FOLDER + 'api_' + time.strftime('%Y%m%d') + '.err'
-    with codecs.open(filename, 'a', 'utf-8') as myfile:
-        myfile.write('TIME: ' + time.strftime('%H%M') + ' ' + err)
+    api_message = {'TIME': time.strftime('%Y%m%d%H%M'), 'MESSAGE': message}
+    mongo.db.api.insert_one(api_message).inserted_id
 
 
-def log_info(total_words, total_uncommon_words, total_uncommon_def):
+def log_info(total_words, total_uncommon_words, total_uncommon_def, mongo):
     ''' Logs Word gathering info '''
     info = ('MESSAGE: ' + 'Total Words Collected: ' + str(total_words) +
             ' Total Uncommon Words found: ' + str(total_uncommon_words) +
             ' Total Uncommon words found with defintions: ' +
-            str(total_uncommon_def) + '\n')
-    filename = LOGS_FOLDER + 'words_' + time.strftime('%Y%m%d') + '.log'
-    with codecs.open(filename, 'a', 'utf-8') as myfile:
-        myfile.write('TIME: ' + time.strftime('%H%M') + ' ' + info)
+            str(total_uncommon_def))
+    log_message = {'TIME': time.strftime('%Y%m%d%H%M'), 'MESSAGE': info}
+    mongo.db.logs.insert_one(log_message).inserted_id
+
+
+def get_code(words):
+    ''' Generates the code based on the words
+        returns the generated code '''
+    total_length = len(words)
+    words_keys = words.keys()
+    fwfl = words_keys[0][0]
+    fwll = words_keys[0][-1]
+    lwfl = words_keys[-1][0]
+    lwll = words_keys[-1][-1]
+    ascii_value = 0
+    for word in words_keys:
+        ascii_value = ascii_value + ord(word[0])
+    return str(total_length) + fwfl + fwll + lwfl + lwll + str(ascii_value)

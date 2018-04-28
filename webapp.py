@@ -1,18 +1,20 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 # Used to run the webapp
 from flask import (Flask, render_template, request, session, redirect,
                    url_for, Markup, flash)
 # Used to save files
 from werkzeug.utils import secure_filename
+# Used for the database
+from flask_pymongo import PyMongo
 # This is the functions
 from words import *
-# This is used to save the tests
-from codes import *
 # This is used for logging information
 from log_errors_info import *
 
 # FILE LOCATIONS
 UPLOAD_FOLDER = 'uploads/'
-TESTS_FOLDER = 'tests/'
 
 
 # Logging and error messages
@@ -28,13 +30,21 @@ FREQUENCY_LIMIT = 100
 ALLOWED_EXTENSIONS = set(['txt', 'doc', 'docx', 'obt', 'rtf',
                           'pdf', 'ppt', 'pptx'])
 DISALLOWED_WORD_LIST = ('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',',
-                        '\t', ':', '.', '(', ')', '?', '"', "'", '-', ';',)
+                        '\t', ':', '.', '(', ')', '?', '"', "'", '-', ';',
+                        '/', '%', '$', '&', '‘', '€', '+', '*', '[', '’',
+                        '_', '=', '”', '…', '“', '^', ']', '{', '}', '<',
+                        '>', '~', '`', '|', '#', '@', '!', '•', '–', )
 
 
 # Used for FLASK
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = 'itsmybirthdaythatsthepassword'
+
+
+# Used for MongoDB
+app.config['MONGO_DBNAME'] = 'elt'
+mongo = PyMongo(app)
 
 
 @app.route('/')
@@ -49,7 +59,7 @@ def review():
         Brings you to a REVIEW page for the words you wanna keep.'''
     # check if the post request has the file part
     if 'exam' not in request.files:
-        log_HTTP_Error(request.remote_addr, FILE_UPLOAD_ERROR_NONE)
+        log_HTTP_Error(request.remote_addr, FILE_UPLOAD_ERROR_NONE, mongo)
         flash(FILE_UPLOAD_ERROR_NONE)
         return redirect(url_for('index'))
     # get the file and check to see if its valid
@@ -57,22 +67,22 @@ def review():
     if file and allowed_file(file.filename, ALLOWED_EXTENSIONS):
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        data = get_text(filename, UPLOAD_FOLDER)
+        data = get_text(filename, UPLOAD_FOLDER, mongo)
         # The function will return ERROR if it fails
         if data == 'ERROR':
             flash('Server could not read the file')
             return redirect(url_for('index'))
         data_list = split_text(data, DISALLOWED_WORD_LIST)
-        data_list_freq = get_uncommon_words(data_list, FREQUENCY_LIMIT)
+        data_list_freq = get_uncommon_words(data_list, FREQUENCY_LIMIT, mongo)
         if data_list_freq is None:
             flash(API_ERROR)
             return redirect(url_for('index'))
-        data_list_def = get_definitions(data_list_freq)
-        log_info(len(data_list), len(data_list_freq), len(data_list_def))
+        data_list_def = get_definitions(data_list_freq, mongo)
+        log_info(len(data_list), len(data_list_freq), len(data_list_def), mongo)
         session['defintions'] = data_list_def
         return render_template('review.html', words=data_list_def)
     # File is not a valid file
-    log_HTTP_Error(request.remote_addr, FILE_UPLOAD_ERROR_EXTENTIONS)
+    log_HTTP_Error(request.remote_addr, FILE_UPLOAD_ERROR_EXTENTIONS, mongo)
     flash(FILE_UPLOAD_ERROR_EXTENTIONS)
     return render_template('index.html')
 
@@ -94,7 +104,9 @@ def update():
     for word in old_data_list_def:
         if request.form.get(word):
             data_list_def[word] = old_data_list_def[word]
-    code = save_test_file(data_list_def, TESTS_FOLDER)
+    code = get_code(data_list_def)
+    database_object = {'code':code, 'words':data_list_def}
+    mongo.db.words.insert_one(database_object).inserted_id
     quiz_code = 'quiz?code=' + code
     return render_template('saved.html', code=code, quiz_code=quiz_code)
 
@@ -103,10 +115,11 @@ def update():
 def quiz():
     ''' Takes the words and displays the test '''
     code = request.args.get('code')
-    data_list_def = load_test_file(code, TESTS_FOLDER)
-    if data_list_def is None:
+    data_list_def = list(mongo.db.words.find({'code': code}))
+    if len(data_list_def) == 0:
         flash(WRONG_CODE)
         return redirect(url_for('index'))
+    data_list_def = data_list_def[0]['words']
     list_random_def = get_random_defintions(len(data_list_def))
     questions = make_questions(data_list_def, list_random_def)
     answer_code = 'answers?code=' + code
@@ -120,7 +133,11 @@ def answers():
     correct = []
     wrong = {}
     code = request.args.get('code')
-    data_list_def = load_test_file(code, TESTS_FOLDER)
+    data_list_def = list(mongo.db.words.find({'code': code}))
+    if len(data_list_def) == 0:
+        flash(WRONG_CODE)
+        return redirect(url_for('index'))
+    data_list_def = data_list_def[0]['words']
     for word in data_list_def:
         answered = request.form.get(word)
         if data_list_def[word] == answered:

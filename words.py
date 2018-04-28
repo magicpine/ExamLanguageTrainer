@@ -22,7 +22,7 @@ client = swagger.ApiClient(apiKey, apiUrl)
 NUM_OF_RANDOM_DEF = 3
 
 
-def get_text(filename, UPLOAD_FOLDER):
+def get_text(filename, UPLOAD_FOLDER, mongo):
     ''' Opens up a file and converts it into a text file and reads it
         returns a string of all the text in the file '''
     # Depending the the file it needs to be changed how it gets
@@ -47,7 +47,7 @@ def get_text(filename, UPLOAD_FOLDER):
             data = myfile.read().replace('\n', '')
     except Exception as e:
         err = 'Cannot read the text file of: ' + filename + ' ' + str(e)
-        log_file_error(err)
+        log_file_error(err, mongo)
         return 'ERROR'
     # Delete the new files and return the string of words
     os.system('rm -f ' + new_filename)
@@ -88,7 +88,7 @@ def split_text(data, DISALLOWED_WORD_LIST):
     return clean_list_set_list
 
 
-def get_uncommon_words(data_list, FREQUENCY_LIMIT):
+def get_uncommon_words(data_list, FREQUENCY_LIMIT, mongo):
     ''' Determines which of the words are uncommon
         returns a set of words that are below the limit '''
     data_list_freq = {}
@@ -102,17 +102,17 @@ def get_uncommon_words(data_list, FREQUENCY_LIMIT):
         except urllib2.HTTPError as e:
             # When the word doesn't exist, it throws a HTTP Error
             message = 'The word: ' + word + " doesn't exist. " + str(e)
-            log_API_error(message)
+            log_API_error(message, mongo)
             pass
         except urllib2.URLError as e:
             # API stops responding
             message = 'The API has stopped responding'
-            log_API_error(message)
+            log_API_error(message, mongo)
             return None
     return data_list_freq
 
 
-def get_definitions(data_list_freq):
+def get_definitions(data_list_freq, mongo):
     ''' Takes a list of words and finds the definintions for the words it Can
         returns a dic of [word] = definition '''
     data_list_def = {}
@@ -129,7 +129,7 @@ def get_definitions(data_list_freq):
                     data_list_def[word] = defin[0].text
         except Exception as e:
             message = 'The word: ' + word + ' Threw a error. ' + str(e)
-            log_API_error(message)
+            log_API_error(message, mongo)
             pass
     return data_list_def
 
