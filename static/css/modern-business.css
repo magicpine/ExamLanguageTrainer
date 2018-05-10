@@ -48,21 +48,23 @@ body {
 .files{
   position:relative;
 }
-.files:before {
-    position: absolute;
-    bottom: 10px;
-    left: 0;
-    pointer-events: none;
-    width: 75%;
-    right: 0;
-    content: " Upload or drag your file here. ";
-    display: block;
-    margin: 0 auto;
-    color: #2ea591;
-    font-weight: 600;
-    font-size: 120%;
-    text-transform: capitalize;
-    text-align: center;
+ @media screen and (min-width: 768px) {
+  .files:before {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      pointer-events: none;
+      width: 75%;
+      right: 0;
+      content: " Upload or drag your file here. ";
+      display: block;
+      margin: 0 auto;
+      color: #2ea591;
+      font-weight: 600;
+      font-size: 120%;
+      text-transform: capitalize;
+      text-align: center;
+  }
 }
 div#loading {
     min-height: 480px;
@@ -119,35 +121,10 @@ input[type="checkbox"] {
   background-color: green;
   color:#FFF;
 }
-.reviewButton,
-.quizButton{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.reviewButton input,
-.quizButton input,{
-  width: 25%;
-}
 /* UPDATE PAGE */
-
 .updateHeader{
   text-align: center;
   width: auto;
   padding-top: 10%;
-}
-.updateFile{
-  display: flex;
-  width: 33%;
-  float: left;
-  align-items: center;
-  justify-content: center;
-}
-.updateTest{
-  display: flex;
-  width: 33%;
-  float: right;
-  align-items: center;
-  justify-content: center;
 }
 /* QUIZ PAGE is in its own file */
