@@ -22,24 +22,12 @@ body {
   }
 }
 /* INDEX PAGE */
-.carousel-item {
-  min-height: 480px;
-  background: no-repeat center center scroll;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+.jumbo-fix1{
+  margin-top: 2%;
 }
-.carousel-slide-box {
-  margin: auto;
-  color: black;
-}
-.carousel-slide-box2{
-  margin: auto;
-  color: black;
-}
-.portfolio-item {
-  margin-bottom: 30px;
+.jumbo-fix,
+.jumbo-fix1{
+  text-align: center;
 }
 .files input {
     outline: 2px dashed #92b0b3;
@@ -92,16 +80,6 @@ div#loading {
 .loadingImg{
   display: block;
   margin: 0 auto;
-}
-.carousel-caption{
-  position: relative;
-  width:80%;
-  height: 50%;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  margin: auto;
-  padding: 70px 0;
 }
 /* REVIEW PAGE */
 .words{
