@@ -77,7 +77,7 @@ body {
     text-align: center;
 }
 div#loading {
-    height: 65vh;
+    min-height: 480px;
     width: auto;
     margin: auto;
     padding-top: 10%;
