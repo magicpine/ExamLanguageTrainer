@@ -81,6 +81,8 @@ def review():
         data_list_def = get_definitions(data_list_freq, mongo)
         log_info(len(data_list), len(data_list_freq), len(data_list_def), mongo)
         session['defintions'] = data_list_def
+        if len(data_list_def) == 0:
+            return render_template('sorry.html')
         return render_template('review.html', words=data_list_def)
     # File is not a valid file
     log_HTTP_Error(request.remote_addr, FILE_UPLOAD_ERROR_EXTENTIONS, mongo)
