@@ -48,7 +48,7 @@ body {
 .files{
   position:relative;
 }
- @media screen and (min-width: 768px) {
+ @media (min-width: 992px) {
   .files:before {
       position: absolute;
       bottom: 10px;
