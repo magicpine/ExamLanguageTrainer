@@ -1,17 +1,18 @@
 {% extends 'base.html' %}
-
 {% block the_block %}
-	<h2>
-    Your test is saved... the code to for the test is: <b>{{code}}</b>
-  </h2>
-	<div>
-		<form action="/" method="get">
-			<input type="submit" value="Upload another file" />
-		</form>
+<div class="updateHeader">
+	<div class="jumbotron">
+		<h2>Your test is saved... the code to for the test is: <kbd>7neSc669</kbd></h2>
 	</div>
-  <div>
-		<form action="{{quiz_code}}" method="post">
-			<input type="submit" value="Take the Test" />
-		</form>
-	</div>
+</div>
+<div class="updateFile">
+	<form action="/" method="get">
+		<input type="submit" class="btn btn-success btn-lg" value="Upload another file" />
+	</form>
+</div>
+<div class="updateTest">
+	<form action="quiz?code=7neSc669" method="post">
+		<input type="submit" class="btn btn-success btn-lg" value="Take the Test" />
+	</form>
+</div>
 {% endblock %}

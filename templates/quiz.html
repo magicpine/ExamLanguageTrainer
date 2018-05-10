@@ -1,23 +1,29 @@
 {% extends 'base.html' %}
-
+{% block the_scripts %}
+<link href="static/css/quiz.css" rel="stylesheet">
+{% endblock %}
 {% block the_block %}
-		<p>
-			<h2>Here are the words</h2>
-      <form action={{answer_code}} method='POST'>
-  			<ol>
-  				{% for word, def in words.iteritems() %}
-  					<li>
-  						What is the definition of <b>{{word}}</b>? </br>
-              {% for definition in def %}
-                  <input type='radio' value='{{definition}}' name='{{word}}' />{{definition}} </br>
-              {% endfor %}
-						</br>
-						</br>
-						</br>
-  					</li>
-  				{% endfor %}
-  			</ol>
-        <input type="submit" value="submit" />
-      </form>
-		<p>
+<div class="updateQuiz">
+  <div class="jumbotron">
+		<h2>Quiz Time!</h2>
+	</div>
+</div>
+<form action={{answer_code}} method='POST'>
+	{% for word, def in words.iteritems() %}
+		<div class="container-fluid bg-info">
+			<h3>What is the definition of <kbd>{{word}}</kbd>?</h3>
+			<div class="quiz" id="quiz" data-toggle="buttons">
+				{% for definition in def %}
+					<label class="element-animation1 btn btn-lg btn-primary btn-block"><span class="btn-label"><i class="glyphicon glyphicon-chevron-right"></i></span> <input type="radio" name='{{word}}' value='{{definition}}'>{{definition}}</label>
+				{% endfor %}
+			</div>
+			<br>
+		</div>
+		</br>
+  {% endfor %}
+	<div class="quizButton">
+  	<input type="submit" class="btn btn-success btn-lg" value="Finish Quiz" />
+	</div>
+</form>
+<br>
 {% endblock %}

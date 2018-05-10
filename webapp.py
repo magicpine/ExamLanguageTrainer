@@ -3,7 +3,7 @@
 
 # Used to run the webapp
 from flask import (Flask, render_template, request, session, redirect,
-                   url_for, Markup, flash)
+                   url_for, Markup, flash, jsonify)
 # Used to save files
 from werkzeug.utils import secure_filename
 # Used for the database
@@ -12,6 +12,7 @@ from flask_pymongo import PyMongo
 from words import *
 # This is used for logging information
 from log_errors_info import *
+
 
 # FILE LOCATIONS
 UPLOAD_FOLDER = 'uploads/'
@@ -102,7 +103,9 @@ def update():
     old_data_list_def = session['defintions']
     data_list_def = {}
     for word in old_data_list_def:
-        if request.form.get(word):
+        # Bootstrap labels don't uncheck after first click
+        # So if the checkbox is checked that means they don't want the word
+        if not request.form.get(word):
             data_list_def[word] = old_data_list_def[word]
     code = get_code(data_list_def)
     database_object = {'code':code, 'words':data_list_def}
@@ -147,6 +150,13 @@ def answers():
     return render_template('answers.html', correct=correct, wrong=wrong,
                            correct_total=len(correct),
                            total=len(data_list_def))
+
+
+@app.route('/faq')
+def faq():
+    ''' FAQ Page '''
+    return render_template('faq.html')
+
 
 # Only used for local use
 if __name__ == '__main__':

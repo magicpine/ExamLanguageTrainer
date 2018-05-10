@@ -1,17 +1,22 @@
 {% extends 'base.html' %}
-
 {% block the_block %}
-		<h2>You got these words correct</h2>
-    <ol>
-      {% for word in correct %}
-        <li> <b>{{word}}</b> </li>
-      {% endfor %}
-    </ol>
-    <h2> You got these words wrong </h2>
-    <ol>
-      {% for wrong, def in wrong.iteritems() %}
-        <li> <b>{{wrong}}</b>: {{def}}</li>
-      {% endfor %}
-    </ol>
-    <h3> You got {{correct_total}} out of {{total}}</h3>
+<div class="jumbotron">
+	<h2>You got these words correct</h2>
+  <ol>
+    {% for word in correct %}
+      <li> <b>{{word}}</b> </li>
+    {% endfor %}
+  </ol>
+</div>
+<div class="jumbotron">
+	<h2> You got these words wrong </h2>
+  <ol>
+    {% for wrong, def in wrong.iteritems() %}
+    	<li> <b>{{wrong}}</b>: {{def}}</li>
+    {% endfor %}
+  </ol>
+</div>
+<div class="jumbotron">
+	<h3> You got {{correct_total}} out of {{total}}</h3>
+</div>
 {% endblock %}

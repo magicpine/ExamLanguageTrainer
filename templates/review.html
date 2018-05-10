@@ -1,29 +1,32 @@
 {% extends 'base.html' %}
-
 {% block the_block %}
-		<p>
-			<h2>
-        Here are the words that were found to be uncommon.  Please check the
-        ones you would like to keep.
-      </h2>
-      <form action='/update' method='POST'>
-  			<ol>
-  				{% for word, def in words.iteritems() %}
-  					<li>
-  						The found definition of: <b>{{word}}</b>
-              </br>
-              </br>
-              {{def}}
-              </br>
-              <input type='checkbox' value='{{def}}' name='{{word}}' />
-              Would you like to keep this?
-              </br>
-              </br>
-              </br>
-  					</li>
-  				{% endfor %}
-  			</ol>
-        <input type="submit" value="submit" />
-      </form>
-		<p>
+<h1 class="mt-4 mb-3">Here are the words that were found to be uncommon.</h1>
+<h3>Please check the ones you don't want to keep.</h3>
+<div class="words">
+	<form action='/update' method='POST'>
+		{% for word, def in words.iteritems() %}
+			<div class="row">
+				<div class="info-block block-info clearfix">
+					<div class="square-box pull-left">
+						<span class="glyphicon glyphicon-tags glyphicon-lg"></span>
+					</div>
+					<div data-toggle="buttons" class="btn-group bizmoduleselect">
+						<label class="btn btn-default fix-box">
+							<div class="bizcontent">
+								<input type="checkbox" name="{{word}}" autocomplete="off" value="{{def}}">
+								<span class="glyphicon glyphicon-ok glyphicon-lg"></span>
+								<p><b>{{word}}: </b>{{def}}</p>
+							</div>
+						</label>
+					</div>
+				</div>
+			</div>
+			<hr>
+		{% endfor %}
+		<div class="reviewButton">
+			<input type="submit" class="btn btn-lg btn-success" value="Finished Review" />
+		</div>
+		<br>
+	</form>
+</div>
 {% endblock %}
