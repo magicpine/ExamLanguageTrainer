@@ -14,6 +14,12 @@ def log_API_error(message, mongo):
     mongo.db.api.insert_one(api_message).inserted_id
 
 
+def log_file_error(message, mongo):
+    ''' Logs FILE ERRORS '''
+    file_message = {'TIME': time.strftime('%Y%m%d%H%M'), 'MESSAGE': message}
+    mongo.db.file.insert_one(file_message).inserted_id
+
+
 def log_info(total_words, total_uncommon_words, total_uncommon_def, mongo):
     ''' Logs Word gathering info '''
     info = {'Total Words Collected':total_words,
