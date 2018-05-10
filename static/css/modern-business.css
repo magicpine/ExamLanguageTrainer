@@ -34,7 +34,7 @@ body {
     outline-offset: -10px;
     -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
     transition: outline-offset .15s ease-in-out, background-color .15s linear;
-    padding: 40px 0px 40px 5%;
+    padding: 50px 0px 60px 5%;
     margin: 0;
     width: 100% !important;
     text-align: center;
