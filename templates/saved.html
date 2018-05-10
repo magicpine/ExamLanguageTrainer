@@ -2,7 +2,7 @@
 {% block the_block %}
 <div class="updateHeader">
 	<div class="jumbotron">
-		<h2>Your test is saved... the code to for the test is: <kbd>7neSc669</kbd></h2>
+		<h2>Your test is saved... the code to for the test is: <kbd>{{code}}</kbd></h2>
 	</div>
 </div>
 <div class="updateFile">
@@ -11,7 +11,7 @@
 	</form>
 </div>
 <div class="updateTest">
-	<form action="quiz?code=7neSc669" method="post">
+	<form action="{{quiz_code}}" method="post">
 		<input type="submit" class="btn btn-success btn-lg" value="Take the Test" />
 	</form>
 </div>
