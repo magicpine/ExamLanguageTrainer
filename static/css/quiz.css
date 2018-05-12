@@ -21,7 +21,6 @@ label.btn {
     -moz-transition-duration: .3s;
     -o-transition-duration: .3s;
 }
-
 label.btn:hover,
 label.btn:active,
 label.btn:focus, {
@@ -34,7 +33,6 @@ label.btn-block {
     text-align: left;
     position: relative
 }
-
 label .btn-label {
     position: absolute;
     left: 0;
