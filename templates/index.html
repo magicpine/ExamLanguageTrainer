@@ -8,6 +8,17 @@
 </script>
 {% endblock %}
 {% block the_block %}
+<br>
+<div class="row mb-4">
+  <div class="col-md-8">
+	 <p>This web application will allow exam writers to upload their exam so that a test will be generated based on uncommon words found on the exam.
+      Students then can take the test to prepare themselves to the language they will come across on the exam without revealing the exam.</p>
+   <p>To learn how to use this website and the functionality of it.  Please go to the FAQS and learn more about what this amazing product.</p>
+	</div>
+	 <div class="col-md-4">
+		<a class="btn btn-lg btn-secondary btn-block" href="faq">Show Tutorial</a>
+	 </div>
+</div>
 <div id="loading">
 	<h2 class="loadingText">Please wait while we process your files</h2>
 	<img class="loadingImg" src="/static/image/103.gif" alt="red"/>
@@ -16,7 +27,7 @@
 <div id="content">
 	<header>
     <div class="jumbotron jumbo-fix1">
-      <h3>Upload your file here</h3>
+      <h3>Upload your file here Files Allowed: [txt, doc, docx, obt, rtf, pdf, ppt, pptx]</h3>
       <form action="/review" method="post" enctype="multipart/form-data">
         <div class="form-group files">
           <input type="file" class="form-control" multiple="" name="exam">
@@ -35,12 +46,4 @@
   </header>
 </div>
 <br>
-<div class="row mb-4">
-  <div class="col-md-8">
-	 <p>To learn how to use this website and the functionality of it.  Please go to the FAQS and learn more about what this amazing product.</p>
-	</div>
-	 <div class="col-md-4">
-		<a class="btn btn-lg btn-secondary btn-block" href="faq">Show Tutorial</a>
-	 </div>
-</div>
 {% endblock %}
