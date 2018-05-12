@@ -128,3 +128,7 @@ input[type="checkbox"] {
   padding-top: 10%;
 }
 /* QUIZ PAGE is in its own file */
+/* FAQ Page */
+.videos{
+  text-align: center;
+}
