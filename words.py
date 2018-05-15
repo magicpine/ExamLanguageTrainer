@@ -44,7 +44,7 @@ def get_text(filename, UPLOAD_FOLDER, mongo):
     # Open the file and get text
     try:
         with open(new_filename, 'r') as myfile:
-            data = myfile.read().replace('\n', '')
+            data = myfile.read().replace('\n', ' ')
     except Exception as e:
         err = 'Cannot read the text file of: ' + filename + ' ' + str(e)
         log_file_error(err, mongo)
@@ -109,6 +109,9 @@ def get_uncommon_words(data_list, FREQUENCY_LIMIT, mongo):
             message = 'The API has stopped responding'
             log_API_error(message, mongo)
             return None
+    with open('uncommon_words.txt', 'w') as myfile:
+        for word in data_list_freq.keys():
+            myfile.write(word + '\n')
     return data_list_freq
 
 
