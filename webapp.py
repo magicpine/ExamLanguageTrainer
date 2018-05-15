@@ -20,7 +20,8 @@ UPLOAD_FOLDER = 'uploads/'
 
 # Logging and error messages
 FILE_UPLOAD_ERROR_NONE = 'No file exists'
-FILE_UPLOAD_ERROR_EXTENTIONS = 'Wrong file extentions used'
+FILE_UPLOAD_ERROR_EXTENTIONS = 'Wrong file extensions used'
+FILE_READ_ERROR = 'Server could not read the file'
 NO_CODE = 'Please enter in a code'
 WRONG_CODE = 'Wrong code entered'
 API_ERROR = 'The API has stopped responding. Please try again'
@@ -56,7 +57,7 @@ def index():
 
 @app.route('/review', methods=["POST"])
 def review():
-    ''' Breaks down the file into uncommon words and defintions
+    ''' Breaks down the file into uncommon words and definitions
         Brings you to a REVIEW page for the words you wanna keep.'''
     # check if the post request has the file part
     if 'exam' not in request.files:
@@ -71,7 +72,7 @@ def review():
         data = get_text(filename, UPLOAD_FOLDER, mongo)
         # The function will return ERROR if it fails
         if data == 'ERROR':
-            flash('Server could not read the file')
+            flash(FILE_READ_ERROR)
             return redirect(url_for('index'))
         data_list = split_text(data, DISALLOWED_WORD_LIST)
         data_list_freq = get_uncommon_words(data_list, FREQUENCY_LIMIT, mongo)
@@ -80,7 +81,7 @@ def review():
             return redirect(url_for('index'))
         data_list_def = get_definitions(data_list_freq, mongo)
         log_info(len(data_list), len(data_list_freq), len(data_list_def), mongo)
-        session['defintions'] = data_list_def
+        session['definitions'] = data_list_def
         if len(data_list_def) == 0:
             return render_template('sorry.html')
         return render_template('review.html', words=data_list_def)
@@ -92,6 +93,7 @@ def review():
 
 @app.route('/process', methods=['POST'])
 def process():
+    ''' Takes the code from the index page and redirects you to the quiz'''
     test_code = request.form.get('test')
     if test_code.strip() == '':
         flash(NO_CODE)
@@ -102,7 +104,7 @@ def process():
 @app.route('/update', methods=["POST"])
 def update():
     ''' Takes the words after review and stores the words '''
-    old_data_list_def = session['defintions']
+    old_data_list_def = session['definitions']
     data_list_def = {}
     for word in old_data_list_def:
         # Bootstrap labels don't uncheck after first click
@@ -134,7 +136,7 @@ def quiz():
 
 @app.route('/answers', methods=["POST"])
 def answers():
-    ''' Tallys up the answers from the test & displays what you got right '''
+    ''' Tallies up the answers from the test & displays what you got right '''
     correct = []
     wrong = {}
     code = request.args.get('code')

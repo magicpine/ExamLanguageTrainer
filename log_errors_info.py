@@ -4,7 +4,8 @@ import time
 
 def log_HTTP_Error(ip, message, mongo):
     ''' Logs HTTP ERRORS '''
-    http_message = {'TIME': time.strftime('%Y%m%d%H%M'), 'IP': ip, 'MESSAGE': message}
+    http_message = {'TIME': time.strftime('%Y%m%d%H%M'),
+                    'IP': ip, 'MESSAGE': message}
     mongo.db.http.insert_one(http_message).inserted_id
 
 

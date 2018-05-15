@@ -28,7 +28,7 @@ def convert_ppt_to_text(filename, UPLOAD_FOLDER):
     sys = 'soffice --headless --convert-to pdf '+UPLOAD_FOLDER+filename
     os.system(sys)
     new_filename = filename.split('.')[0] + '.pdf'
-    # Take the PDF and covert that into a text file
+    # Take the PDF and convert that into a text file
     sys = 'pdftotext ' + new_filename
     os.system(sys)
     os.system('rm -f ' + new_filename)
