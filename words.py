@@ -109,9 +109,6 @@ def get_uncommon_words(data_list, FREQUENCY_LIMIT, mongo):
             message = 'The API has stopped responding'
             log_API_error(message, mongo)
             return None
-    with open('uncommon_words.txt', 'w') as myfile:
-        for word in data_list_freq.keys():
-            myfile.write(word + '\n')
     return data_list_freq
 
 

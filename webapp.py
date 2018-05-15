@@ -81,14 +81,14 @@ def review():
             flash(FILE_READ_ERROR)
             return redirect(url_for('index'))
         data_list = split_text(data, DISALLOWED_WORD_LIST)
-        # Take the list of words and filter it out from the list of Common words
-        filtered_list = [x for x in TOP_COMMON_WORDS_LIST if x not in data_list]
-        data_list_freq = get_uncommon_words(filtered_list, FREQUENCY_LIMIT, mongo)
+        # Take the list of words and filter it using a list of Common words
+        data = [x for x in TOP_COMMON_WORDS_LIST if x not in data_list]
+        data_list_freq = get_uncommon_words(data, FREQUENCY_LIMIT, mongo)
         if data_list_freq is None:
             flash(API_ERROR)
             return redirect(url_for('index'))
         data_list_def = get_definitions(data_list_freq, mongo)
-        log_info(len(data_list), len(data_list_freq), len(data_list_def), mongo)
+        log_info(len(data), len(data_list_freq), len(data_list_def), mongo)
         session['definitions'] = data_list_def
         if len(data_list_def) == 0:
             return render_template('sorry.html')
@@ -120,7 +120,7 @@ def update():
         if not request.form.get(word):
             data_list_def[word] = old_data_list_def[word]
     code = get_code(data_list_def)
-    database_object = {'code':code, 'words':data_list_def}
+    database_object = {'code': code, 'words': data_list_def}
     mongo.db.words.insert_one(database_object).inserted_id
     quiz_code = 'quiz?code=' + code
     return render_template('saved.html', code=code, quiz_code=quiz_code)
