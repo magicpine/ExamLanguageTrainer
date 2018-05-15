@@ -35,7 +35,7 @@ def get_text(filename, UPLOAD_FOLDER, mongo):
         convert_doc_to_text(filename, UPLOAD_FOLDER)
     # Delete the uploaded file
     os.system('rm -f ' + UPLOAD_FOLDER + filename)
-    # The new file is the same name just with the txt extention
+    # The new file is the same name just with the txt extension
     new_filename = filename.split('.')[0] + '.txt'
     # Sometimes it gets saved in the UPLOADS folder so just seeing
     # Where the file is
@@ -55,14 +55,14 @@ def get_text(filename, UPLOAD_FOLDER, mongo):
 
 
 def allowed_file(filename, ALLOWED_EXTENSIONS):
-    ''' Sees if the file extention is in the ALLOWED_EXTENSIONS
+    ''' Sees if the file extension is in the ALLOWED_EXTENSIONS
         returns True if it is, False if it isn't '''
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 def split_text(data, DISALLOWED_WORD_LIST):
-    ''' Splits the string into indiviual words and removes everything
+    ''' Splits the string into individual words and removes everything
         but numbers and letters
         returns a set of words '''
     # Remove the tabs
@@ -77,7 +77,7 @@ def split_text(data, DISALLOWED_WORD_LIST):
             # removes the \ (UTF-8) punctuation
             word = word.decode('utf-8', 'ignore')
             word = word.strip()
-            # Words might have muilptle words in them due to formatting
+            # Words might have multiple words in them due to formatting
             if len(word.split()) > 1:
                 for split_word in word.split():
                     clean_list.append(split_word.strip())
@@ -113,14 +113,14 @@ def get_uncommon_words(data_list, FREQUENCY_LIMIT, mongo):
 
 
 def get_definitions(data_list_freq, mongo):
-    ''' Takes a list of words and finds the definintions for the words it Can
+    ''' Takes a list of words and finds the definitions for the words it Can
         returns a dic of [word] = definition '''
     data_list_def = {}
     # API
     wordApi = WordApi.WordApi(client)
     for word in data_list_freq.keys():
         try:
-            # The dictonary requires ascii characters
+            # The dictionary requires ascii characters
             word = word.decode('ascii', 'ignore')
             defin = wordApi.getDefinitions(word)
             # The API returns it as NONE if not found
@@ -135,9 +135,9 @@ def get_definitions(data_list_freq, mongo):
 
 
 def get_random_defintions(length):
-    ''' Gets random words and defintions the total being
+    ''' Gets random words and definitions the total being
         length * NUM_OF_RANDOM_DEF
-        returns a dictonary of [word] = definition '''
+        returns a dictionary of [word] = definition '''
     # for multiple choice test
     total_count = length * NUM_OF_RANDOM_DEF
     random_defintions = []
@@ -147,7 +147,7 @@ def get_random_defintions(length):
         example = wordsApi.getRandomWord(hasDictionaryDef=True,
                                          minDictionaryCount=2)
         exampleDef = wordApi.getDefinitions(example.word)
-        # Recieve only the first defintion
+        # Receive only the first definition
         random_defintions.append(exampleDef[0].text)
     return random_defintions
 
@@ -155,7 +155,7 @@ def get_random_defintions(length):
 def make_questions(data_list_def, list_random_def):
     ''' Makes a test by taking one word from the data_list_def
         and NUM_OF_RANDOM_DEF words from list_random_def to make a test
-        returns a dictonary for the [word] = list of defintions '''
+        returns a dictionary for the [word] = list of definitions '''
     questions = {}
     count = 0
     definitions = []
@@ -164,7 +164,7 @@ def make_questions(data_list_def, list_random_def):
             definitions.append(list_random_def[count])
             count = count + 1
         definitions.append(data_list_def[word])
-        # randomize the defintions everytime
+        # randomize the definitions everytime
         random.shuffle(definitions)
         questions[word] = definitions
         definitions = []
