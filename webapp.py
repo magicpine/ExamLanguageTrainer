@@ -38,6 +38,12 @@ DISALLOWED_WORD_LIST = ('1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ',',
                         '>', '~', '`', '|', '#', '@', '!', '•', '–', )
 
 
+# Common Words list that is used to filter out most common words in files
+FILTER_WORDS_FILE = 'filter_common_words.txt'
+with open(FILTER_WORDS_FILE, 'r') as myfile:
+    TOP_COMMON_WORDS_LIST = myfile.read().replace('\n', ' ').split(' ')
+
+
 # Used for FLASK
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -75,7 +81,9 @@ def review():
             flash(FILE_READ_ERROR)
             return redirect(url_for('index'))
         data_list = split_text(data, DISALLOWED_WORD_LIST)
-        data_list_freq = get_uncommon_words(data_list, FREQUENCY_LIMIT, mongo)
+        # Take the list of words and filter it out from the list of Common words
+        filtered_list = [x for x in TOP_COMMON_WORDS_LIST if x not in data_list]
+        data_list_freq = get_uncommon_words(filtered_list, FREQUENCY_LIMIT, mongo)
         if data_list_freq is None:
             flash(API_ERROR)
             return redirect(url_for('index'))
