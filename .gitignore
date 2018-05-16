@@ -2,3 +2,6 @@ tmp/*
 *.me
 __pycache__/*
 videos/*
+*.pyc
+.ipynb_checkpoints/*
+*.ipynb
