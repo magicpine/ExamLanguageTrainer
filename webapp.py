@@ -82,7 +82,7 @@ def review():
             return redirect(url_for('index'))
         data_list = split_text(data, DISALLOWED_WORD_LIST)
         # Take the list of words and filter it using a list of Common words
-        data = [x for x in TOP_COMMON_WORDS_LIST if x not in data_list]
+        data = [x for x in data_list if x not in TOP_COMMON_WORDS_LIST]
         data_list_freq = get_uncommon_words(data, FREQUENCY_LIMIT, mongo)
         if data_list_freq is None:
             flash(API_ERROR)
